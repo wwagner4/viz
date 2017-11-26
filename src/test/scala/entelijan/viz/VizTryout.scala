@@ -1,8 +1,5 @@
 package entelijan.viz
 
-import java.io.File
-import java.nio.file.{Files, Paths}
-
 object VizTryout extends App {
 
   implicit val creator: VizCreator[Viz.XY] = VizCreatorGnuplot[Viz.XY]()
