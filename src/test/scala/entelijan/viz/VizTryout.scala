@@ -18,7 +18,7 @@ object VizTryout extends App {
   )
 
   val dia = Viz.Diagram[Viz.XY](
-    id = "tryout01",
+    id = "vizTryout01",
     title = "Tryout 01",
     dataRows = Seq(dataRow)
   )
