@@ -195,7 +195,7 @@ trait VizCreator[T <: Lineable] {
   *
   * @param scriptDir Directory in which gnuplot scripts are created
   */
-case class VizCreatorGnuplot[T <: Lineable](scriptDir: File = DefaultDirectories.scriptDir, imageDir: File = DefaultDirectories.imageDir, execute: Boolean = true) extends VizCreator[T] {
+case class VizCreatorGnuplot[T <: Lineable](scriptDir: File = DefaultDirectories().scriptDir, imageDir: File = DefaultDirectories().imageDir, execute: Boolean = true) extends VizCreator[T] {
 
   def create(dia: Dia[T], script: String): Unit = {
 

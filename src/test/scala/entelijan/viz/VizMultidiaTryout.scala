@@ -3,8 +3,10 @@ package entelijan.viz
 import entelijan.viz
 
 object VizMultidiaTryout extends App {
-  
-  implicit val creator: VizCreator[Viz.XY] = VizCreatorGnuplot[Viz.XY]()
+
+  private val dir = DefaultDirectories("viz-tryout")
+
+  implicit val creator: VizCreator[Viz.XY] = VizCreatorGnuplot[Viz.XY](scriptDir= dir.scriptDir, imageDir = dir.imageDir)
 
   val mdia = Viz.MultiDiagram[Viz.XY](
     "vizMultidiaTryout01",

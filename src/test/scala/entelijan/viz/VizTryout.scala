@@ -2,7 +2,9 @@ package entelijan.viz
 
 object VizTryout extends App {
 
-  implicit val creator: VizCreator[Viz.XY] = VizCreatorGnuplot[Viz.XY]()
+  private val dir = DefaultDirectories("viz-tryout")
+
+  implicit val creator: VizCreator[Viz.XY] = VizCreatorGnuplot[Viz.XY](scriptDir= dir.scriptDir, imageDir = dir.imageDir)
 
   val data = Seq(
     Viz.XY(1, 2),
