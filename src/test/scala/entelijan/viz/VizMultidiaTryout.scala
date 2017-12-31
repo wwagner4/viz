@@ -1,12 +1,12 @@
 package entelijan.viz
 
-import entelijan.viz
-
 object VizMultidiaTryout extends App {
 
   private val dir = DefaultDirectories("viz-tryout")
 
   implicit val creator: VizCreator[Viz.XY] = VizCreatorGnuplot[Viz.XY](scriptDir= dir.scriptDir, imageDir = dir.imageDir)
+
+  val yr = Some(Viz.Range(Some(0), Some(5)))
 
   val mdia = Viz.MultiDiagram[Viz.XY](
     "vizMultidiaTryout01",
@@ -16,6 +16,7 @@ object VizMultidiaTryout extends App {
       Viz.Diagram[Viz.XY](
         "a",
         "Diagram A",
+        yRange = yr,
         dataRows = Seq(
           Viz.DataRow[Viz.XY](
             data = Seq(
@@ -38,6 +39,7 @@ object VizMultidiaTryout extends App {
       Viz.Diagram[Viz.XY](
         "b",
         "Diagram B",
+        yRange = yr,
         dataRows = Seq(
           Viz.DataRow[Viz.XY](
             data = Seq(
@@ -60,6 +62,7 @@ object VizMultidiaTryout extends App {
       Viz.Diagram[Viz.XY](
         "c",
         "Diagram C",
+        yRange = yr,
         dataRows = Seq(
           Viz.DataRow[Viz.XY](
             data = Seq(
