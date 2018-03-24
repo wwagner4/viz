@@ -409,7 +409,6 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File = DefaultDirectories
     script +
       s"""
          |$settings
-         |set minussign
          |set title "${dia.title}"
          |$xLabel
          |$yLabel
