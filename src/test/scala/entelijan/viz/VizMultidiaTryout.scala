@@ -4,7 +4,7 @@ object VizMultidiaTryout extends App {
 
   private val dir = DefaultDirectories("viz-tryout")
 
-  implicit val creator: VizCreator[Viz.XY] = VizCreatorGnuplot[Viz.XY](scriptDir= dir.scriptDir, imageDir = dir.imageDir)
+  implicit val creator: VizCreator[Viz.XY] = VizCreators.gnuplot(scriptDir= dir.scriptDir, imageDir = dir.imageDir, clazz=classOf[Viz.XY])
 
   val yr = Some(Viz.Range(Some(0), Some(5)))
 
