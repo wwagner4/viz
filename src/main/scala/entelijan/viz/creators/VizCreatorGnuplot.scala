@@ -14,6 +14,22 @@ import entelijan.viz.{Viz, VizCreator}
   */
 case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, execute: Boolean) extends VizCreator[T] {
 
+  def createDiagram(dia: Diagram[T]): Unit = {
+    val script1 = createDiagramInit(dia)
+    val script2 = createDiagramData(dia, 0, script1)
+    val script3 = createDiagramCommands(dia, 0, script2)
+    create(dia, script3)
+  }
+
+  def createMultiDiagram(mdia: MultiDiagram[T]): Unit = {
+    val script1 = createMultiDiagramInit(mdia)
+    val dias: Seq[(Diagram[T], Int)] = mdia.diagrams.reverse.zipWithIndex
+    val script2 = dias.foldRight(script1) { (diaAndIdx, script) => createDiagramData(diaAndIdx._1, diaAndIdx._2, script) }
+    val script3 = dias.foldRight(script2) { (diaAndIdx, script) => createDiagramCommands(diaAndIdx._1, diaAndIdx._2, script) }
+    val script4 = createMultiDiagramClose(mdia, script3)
+    create(mdia, script4)
+  }
+
   private def createDir(dir: File): Unit = 
     if (! dir.exists()) dir.mkdirs()
   
