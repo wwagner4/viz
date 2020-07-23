@@ -14,10 +14,14 @@ import entelijan.viz.{Viz, VizCreator}
   */
 case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, execute: Boolean) extends VizCreator[T] {
 
+  private def createDir(dir: File): Unit = 
+    if (! dir.exists()) dir.mkdirs()
+  
   def create(dia: Dia[T], script: String): Unit = {
 
     val id = dia.id
     val filename = s"$id.gp"
+    createDir(scriptDir)
     val f = new File(scriptDir, filename)
     use(new PrintWriter(f))(pw => pw.print(script))
     println(s"wrote diagram '$id' to $f")
@@ -69,6 +73,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
 
   def createDiagramInit(dia: Diagram[T]): String = {
     val outfileName = s"${dia.id}.png"
+    createDir(imageDir)
     val outfile = new File(imageDir, outfileName)
     s"""
        |set terminal pngcairo dashed enhanced size ${dia.imgWidth}, ${dia.imgHeight}
