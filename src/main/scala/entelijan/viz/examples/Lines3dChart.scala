@@ -1,8 +1,6 @@
 package entelijan.viz.examples
 
-import java.nio.file.Path
-
-import entelijan.viz.Viz.{DataRow, Diagram, XYZ}
+import entelijan.viz.Viz._
 import entelijan.viz.{VizCreator, VizCreators}
 
 object Lines3dChart extends App {
@@ -10,9 +8,8 @@ object Lines3dChart extends App {
     clazz = classOf[XYZ])
 
   def rows = {
-    for (i <- -10 to 10) yield
-      DataRow(data = for (j <- 1 to 40) yield 
-        XYZ(i, j, math.exp(i * j * 0.01)))
+    for (i <- 0 to 50) yield
+      DataRow(data = for (j <- 1 to 40) yield XYZ(i, j, i * j), style = Style_BOXES)
   }
 
 
@@ -22,7 +19,7 @@ object Lines3dChart extends App {
     id = "ex4",
     title = "Example 4",
     xyPlaneAt = Some(0),
-    dataRows =rows,
+    dataRows = rows,
   )
 
   crea.createDiagram(dia)

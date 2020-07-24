@@ -150,6 +150,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
       case Viz.Style_DOTS => "dots"
       case Viz.Style_LINESPOINTS => "linespoints"
       case Viz.Style_BOXPLOT => "boxplot"
+      case Viz.Style_BOXES => "boxes"
     }
 
     def series(dataRows: Seq[DataRow[T]]) = dataRows.zipWithIndex.map {

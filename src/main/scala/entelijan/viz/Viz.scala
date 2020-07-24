@@ -31,6 +31,8 @@ object Viz {
 
   case object Style_BOXPLOT extends Style
 
+  case object Style_BOXES extends Style
+
   sealed trait DataDim
 
   case object DataDim_1D extends DataDim
@@ -88,7 +90,7 @@ object Viz {
                                    ) {
     def dataDim: DataDim = {
       if (data.isEmpty) throw new IllegalStateException("Cannot determine dimension because list of data is empty")
-      else data(0).dataDim
+      else data.head.dataDim
     }
   }
 
@@ -121,7 +123,7 @@ object Viz {
                                    ) extends Dia[T] {
     def dataDim: DataDim =
       if (dataRows.isEmpty) throw new IllegalStateException("Cannot determine data dimension because no data are defined")
-      else dataRows(0).dataDim
+      else dataRows.head.dataDim
   }
 
   case class MultiDiagram[T <: Lineable](
@@ -136,7 +138,7 @@ object Viz {
 
     def dataDim: DataDim =
       if (diagrams.isEmpty) throw new IllegalStateException("Cannot determine data dimension because no diagram is defined")
-      else diagrams(0).dataDim
+      else diagrams.head.dataDim
   }
 
   case class Range(
