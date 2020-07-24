@@ -12,18 +12,20 @@ object Boxes3dChart extends App {
     imageDir=outDir.toFile, 
     clazz = classOf[XYZ])
 
-  def dats =
-    for (i <- -2 to 2; j <- 1 to 4) yield {
-      XYZ(i, j, math.exp(i * j * 0.1))
-    }
+  def rows = {
+    for (i <- -10 to 10) yield
+      DataRow(data = for (j <- 1 to 40) yield 
+        XYZ(i, j, math.exp(i * j * 0.01)))
+  }
 
 
-  println(dats.mkString("\n"))
+  println(rows.mkString("\n"))
 
   val dia = Diagram[XYZ](
     id = "ex4",
     title = "Example 4",
-    dataRows = List(DataRow(data=dats)),
+    xyPlaneAt = Some(0),
+    dataRows =rows,
   )
 
   crea.createDiagram(dia)
