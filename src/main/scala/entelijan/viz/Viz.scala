@@ -112,7 +112,9 @@ object Viz {
                                      xZeroAxis: Boolean = false,
                                      yZeroAxis: Boolean = false,
                                      zZeroAxis: Boolean = false,
-                                     xyGrid: Int = 100,
+                                     xyGrid: Option[Int] = None,
+                                     xyHidden: Boolean = false,
+                                     xyPlaneAt: Option[Int] = None,
                                      legendPlacement: LegendPlacement = LegendPlacement_LEFT,
                                      legendTitle: Option[String] = None,
                                      dataRows: Seq[DataRow[T]] = Seq.empty

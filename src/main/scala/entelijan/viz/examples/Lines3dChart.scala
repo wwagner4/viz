@@ -5,11 +5,8 @@ import java.nio.file.Path
 import entelijan.viz.Viz.{DataRow, Diagram, XYZ}
 import entelijan.viz.{VizCreator, VizCreators}
 
-object Boxes3dChart extends App {
-  val outDir = Path.of("target", "scripts")
+object Lines3dChart extends App {
   val crea: VizCreator[XYZ] = VizCreators.gnuplot(
-    scriptDir = outDir.toFile, 
-    imageDir=outDir.toFile, 
     clazz = classOf[XYZ])
 
   def rows = {

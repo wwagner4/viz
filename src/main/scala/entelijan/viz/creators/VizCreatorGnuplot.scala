@@ -26,7 +26,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
     val dias: Seq[(Diagram[T], Int)] = mdia.diagrams.reverse.zipWithIndex
     val script2 = dias.foldRight(script1) { (diaAndIdx, script) => createDiagramData(diaAndIdx._1, diaAndIdx._2, script) }
     val script3 = dias.foldRight(script2) { (diaAndIdx, script) => createDiagramCommands(diaAndIdx._1, diaAndIdx._2, script) }
-    val script4 = createMultiDiagramClose(mdia, script3)
+    val script4 = createMultiDiagramClose(script3)
     create(mdia, script4)
   }
 
@@ -35,11 +35,12 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
   
   def create(dia: Dia[T], script: String): Unit = {
 
+    val s = script.split("\n").filter(l => !l.isBlank).mkString("\n")
     val id = dia.id
     val filename = s"$id.gp"
     createDir(scriptDir)
     val f = new File(scriptDir, filename)
-    use(new PrintWriter(f))(pw => pw.print(script))
+    use(new PrintWriter(f))(pw => pw.print(s))
     println(s"wrote diagram '$id' to $f")
 
     if (execute) {
@@ -68,19 +69,21 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
 
 
   }
+  
+  val setTerminal: String = s"set terminal svg background rgb 'white'"
 
   def createMultiDiagramInit(mdia: MultiDiagram[T]): String = {
     val titleString = if (mdia.title.isDefined) s"title '${mdia.title.get}'" else ""
-    val outfileName = s"${mdia.id}.png"
+    val outfileName = s"${mdia.id}.svg"
     val outfile = new File(imageDir, outfileName)
     s"""
-       |set terminal pngcairo dashed enhanced size ${mdia.imgWidth}, ${mdia.imgHeight}
+       |$setTerminal
        |set output '${outfile.getAbsolutePath}'
        |set multiplot layout ${mdia.rows}, ${mdia.columns} $titleString
        |""".stripMargin
   }
 
-  def createMultiDiagramClose(mdia: MultiDiagram[T], script: String): String = {
+  def createMultiDiagramClose(script: String): String = {
     script +
       s"""
          |unset multiplot
@@ -88,11 +91,11 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
   }
 
   def createDiagramInit(dia: Diagram[T]): String = {
-    val outfileName = s"${dia.id}.png"
+    val outfileName = s"${dia.id}.svg"
     createDir(imageDir)
     val outfile = new File(imageDir, outfileName)
     s"""
-       |set terminal pngcairo dashed enhanced size ${dia.imgWidth}, ${dia.imgHeight}
+       |$setTerminal
        |set output '${outfile.getAbsolutePath}'
        |""".stripMargin
   }
@@ -194,14 +197,25 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
         case DataDim_3D => "splot"
       }
 
+    val setGrid: String = {
+      dia.xyGrid.map(g => s"set dgrid3d $g,$g").getOrElse("")
+    }
+    val setHidden: String = {
+      if (dia.xyHidden) "" else "set hidden3d"
+    }
+    val setXyPlaneAt: String = {
+      dia.xyPlaneAt.map(v => s"set xyplane at $v").getOrElse("")
+    }
+
     def settings3D: String =
       dia.dataDim match {
         case DataDim_1D => ""
         case DataDim_2D => ""
         case DataDim_3D =>
           s"""
-             |set dgrid3d ${dia.xyGrid},${dia.xyGrid}
-             |set hidden3d
+             |$setGrid
+             |$setHidden
+             |$setXyPlaneAt
              |""".stripMargin
       }
 
