@@ -5,4 +5,4 @@ version := "0.2-SNAPSHOT"
 organization := "net.entelijan"
 
 scalaVersion := "2.12.12"
-        
+

@@ -115,7 +115,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
       case a: Any => "%f" formatLocal(loc, a.doubleValue())
     }
 
-    def data(dataRows: Seq[DataRow[T]]): String = dataRows.zipWithIndex.map {
+    def data(dataRows: Iterable[DataRow[T]]): String = dataRows.zipWithIndex.map {
       case (dr, i) => s"""
                          |${datablockName(dia, diaIndex, i)} << EOD
                          |${values(dr.data)}
@@ -153,7 +153,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
       case Viz.Style_BOXES => "boxes"
     }
 
-    def series(dataRows: Seq[DataRow[T]]) = dataRows.zipWithIndex.map {
+    def series(dataRows: Iterable[DataRow[T]]) = dataRows.zipWithIndex.map {
       case (dr, i) =>
         def title: String = {
           if (dr.name.isDefined) "title '" + dr.name.get + "'"
@@ -225,7 +225,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
       case LegendPlacement_RIGHT => "right"
     }
 
-    def isBoxplot(dataRows: Seq[Viz.DataRow[T]]): Boolean = {
+    def isBoxplot(dataRows: Iterable[Viz.DataRow[T]]): Boolean = {
       if (dataRows.exists(_.style == Viz.Style_BOXPLOT)) {
         require(dataRows.exists(_.style == Viz.Style_BOXPLOT), "If any datarow has style BOXPLOT all rows must be of style BOXPLOT")
         true
@@ -239,7 +239,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
       else "" + idx
     }
 
-    def xtics(dataRows: Seq[Viz.DataRow[T]]): String =
+    def xtics(dataRows: Iterable[Viz.DataRow[T]]): String =
       dataRows.zipWithIndex.map { case (dr, idx) =>
         s"'${descr(dr, idx)}' ${idx + 1}"
       }.mkString(", ")

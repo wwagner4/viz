@@ -119,7 +119,7 @@ object Viz {
                                      xyPlaneAt: Option[Int] = None,
                                      legendPlacement: LegendPlacement = LegendPlacement_LEFT,
                                      legendTitle: Option[String] = None,
-                                     dataRows: Seq[DataRow[T]] = Seq.empty
+                                     dataRows: Iterable[DataRow[T]] = Iterable.empty
                                    ) extends Dia[T] {
     def dataDim: DataDim =
       if (dataRows.isEmpty) throw new IllegalStateException("Cannot determine data dimension because no data are defined")
