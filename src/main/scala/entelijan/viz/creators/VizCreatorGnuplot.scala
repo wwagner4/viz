@@ -109,10 +109,10 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
     }.mkString("\n")
 
     def formatNumber(n: Number): String = n match {
-      case a: java.lang.Byte => "%d" formatLocal(loc, a.longValue())
-      case a: java.lang.Integer => "%d" formatLocal(loc, a.longValue())
-      case a: java.lang.Long => "%d" formatLocal(loc, a.longValue())
-      case a: Any => "%f" formatLocal(loc, a.doubleValue())
+      case a: java.lang.Byte => "%d".formatLocal(loc, a.longValue())
+      case a: java.lang.Integer => "%d".formatLocal(loc, a.longValue())
+      case a: java.lang.Long => "%d".formatLocal(loc, a.longValue())
+      case a: Any => "%f".formatLocal(loc, a.doubleValue())
     }
 
     def data(dataRows: Iterable[DataRow[T]]): String = dataRows.zipWithIndex.map {
