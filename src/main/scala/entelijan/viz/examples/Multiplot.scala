@@ -5,8 +5,6 @@ import entelijan.viz.{VizCreator, VizCreators}
 
 object Multiplot extends App {
 
-  val c: VizCreator[XY] = VizCreators.gnuplot(clazz = classOf[XY])
-
   def _dats(fact: Double) =
     for (i <- -10 to 10) yield {
       XY(i, math.exp(i * fact))
@@ -19,7 +17,7 @@ object Multiplot extends App {
 
   val dias = for (d <- rows) yield {
     Diagram[XY](
-      id = "ex2",
+      id = "dia",
       title = "Example 2",
       dataRows = Seq(DataRow(data = d)),
     )
@@ -27,6 +25,7 @@ object Multiplot extends App {
 
   val mdia = MultiDiagram(id = "ex4", columns = 3, fontFactor=0.7, title = Some("Multidiagram"), diagrams = dias)
 
+  val c: VizCreator[XY] = VizCreators.gnuplot(clazz = classOf[XY])
   c.createMultiDiagram(mdia)
 
 
