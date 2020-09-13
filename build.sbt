@@ -1,6 +1,6 @@
 name := "viz"
 
-version := "0.2"
+version := "0.2-SNAPSHOT"
 
 organization := "net.entelijan"
 
