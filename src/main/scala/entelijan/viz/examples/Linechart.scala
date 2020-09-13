@@ -9,11 +9,10 @@ object Linechart extends App {
 
   val dats = (-10 to 10).map(i => XY(i, math.exp(i * 0.1)))
 
-  println(dats.mkString("\n"))
-  
   val dia = Diagram[XY](
     id = "ex1",
     title = "Example 1",
+    yRange = Some(Range(Some(-10.0),Some(10.0))),
     dataRows = List(DataRow(data = dats)),
   )
 
