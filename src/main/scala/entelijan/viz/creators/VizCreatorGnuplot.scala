@@ -70,14 +70,17 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
 
   }
   
-  val setTerminal: String = s"set terminal svg background rgb 'white'"
+  def setTerminal(fontFactor: Double): String = {
+    val fontSize = (10 * fontFactor).toInt
+    s"set terminal svg enhanced background rgb 'white' font 'Helvetica,$fontSize'"
+  }
 
   def createMultiDiagramInit(mdia: MultiDiagram[T]): String = {
     val titleString = if (mdia.title.isDefined) s"title '${mdia.title.get}'" else ""
     val outfileName = s"${mdia.id}.svg"
     val outfile = new File(imageDir, outfileName)
     s"""
-       |$setTerminal
+       |${setTerminal(mdia.fontFactor)}
        |set output '${outfile.getAbsolutePath}'
        |set multiplot layout ${mdia.rows}, ${mdia.columns} $titleString
        |""".stripMargin
@@ -95,7 +98,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
     createDir(imageDir)
     val outfile = new File(imageDir, outfileName)
     s"""
-       |$setTerminal
+       |${setTerminal(dia.fontFactor)}
        |set output '${outfile.getAbsolutePath}'
        |""".stripMargin
   }

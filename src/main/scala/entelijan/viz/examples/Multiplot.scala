@@ -25,7 +25,7 @@ object Multiplot extends App {
     )
   }
 
-  val mdia = MultiDiagram(id = "ex4", columns = 3, title = Some("Multidiagram"), diagrams = dias)
+  val mdia = MultiDiagram(id = "ex4", columns = 3, fontFactor=0.7, title = Some("Multidiagram"), diagrams = dias)
 
   c.createMultiDiagram(mdia)
 
