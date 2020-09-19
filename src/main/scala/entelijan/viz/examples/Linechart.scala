@@ -5,9 +5,7 @@ import entelijan.viz.{VizCreator, VizCreators}
 
 object Linechart extends App {
 
-  val c: VizCreator[XY] = VizCreators.gnuplot(clazz = classOf[XY])
-
-  val dats = (-10 to 10).map(i => XY(i, math.exp(i * 0.1)))
+  val dats: Seq[XY] = (-10 to 10).map(i => XY(i, math.exp(i * 0.1)))
 
   val dia = Diagram[XY](
     id = "ex1",
@@ -16,5 +14,6 @@ object Linechart extends App {
     dataRows = List(DataRow(data = dats)),
   )
 
-  c.createDiagram(dia)
+  val creator: VizCreator[XY] = VizCreators.gnuplot(clazz = classOf[XY])
+  creator.createDiagram(dia)
 }
