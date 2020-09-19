@@ -260,6 +260,8 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
       else
         s"""
            |set key inside $lp top vertical Right noreverse enhanced autotitle $legendTitle
+           |set boxwidth 0.7
+           |set style fill solid
         """.stripMargin
 
     script +
