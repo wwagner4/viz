@@ -1,6 +1,6 @@
 package entelijan.viz
 
-import entelijan.viz.Viz.{Dia, Diagram, Lineable, MultiDiagram}
+import entelijan.viz.Viz.{Diagram, Lineable, MultiDiagram}
 
 /**
   * Interface for actual data visualisation
