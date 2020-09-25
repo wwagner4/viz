@@ -15,6 +15,7 @@ object LineChartExample extends App {
     .data(data)
     .xLabel("horiontal")
     .yLabel("vertical")
+    .yRangeMax(2.5)
     .build()
 
 }
