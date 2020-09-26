@@ -1,8 +1,9 @@
 package entelijan.vizb
 
+import java.util.UUID
+
 import entelijan.viz.{Viz, VizCreator, VizCreators}
-import entelijan.viz.Viz.{DataRow, Diagram, XY}
-import entelijan.vizb.LineChartBuilder.Builder
+import entelijan.viz.Viz.XY
 
 sealed trait Creatable
 
@@ -33,12 +34,22 @@ object Creator {
 
 }
 
-abstract class AbstractBuilder[T <: AbstractBuilder[T]](val _id: String) extends Buildable  {
+abstract class AbstractBuilder[T <: AbstractBuilder[T]] extends Buildable  {
 
+  protected var _id: String = UUID.randomUUID().toString
   protected var _title = "undefined Titel"
+
+  protected def normalizeId(id: String): String = {
+    id.replace("-", "_")
+  }
 
   def title(title: String): T = {
     this._title = title
+    this.asInstanceOf[T]
+  }
+
+  def id(id: String): T = {
+    this._id = id
     this.asInstanceOf[T]
   }
 

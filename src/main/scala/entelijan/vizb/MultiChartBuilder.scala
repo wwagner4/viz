@@ -5,7 +5,7 @@ import entelijan.viz.Viz.{Diagram, MultiDiagram, XY}
 
 object MultiChartBuilder {
 
-  class Builder(override val _id: String) extends AbstractBuilder[Builder](_id) with Buildable {
+  class Builder extends AbstractBuilder[Builder] with Buildable {
 
     def toDiagramXy(buildable: Buildable): Diagram[XY] = {
       buildable.build() match {
@@ -38,7 +38,7 @@ object MultiChartBuilder {
     def build(): Creatable = {
       if (_buildables.isEmpty) throw new IllegalArgumentException("MultiChart needs at least one diagram")
       val multiDiagram = MultiDiagram[XY](
-        id = this._id,
+        id = normalizeId(this._id),
         columns = this._columns,
         title = Some(_title),
         diagrams = _buildables.map(toDiagramXy),
@@ -50,7 +50,7 @@ object MultiChartBuilder {
   }
 
 
-  def apply(_id: String): Builder = new Builder(_id)
+  def apply(_id: String): Builder = new Builder().id(_id)
 
 
 }

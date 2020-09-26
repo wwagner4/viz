@@ -10,7 +10,7 @@ object MultiChartExample extends App {
   val builders = {
     def createBuilder(sequence: S) = {
       val f = "%.2f".format(sequence.frequency)
-      LineChartBuilder("dummy")
+      LineChartBuilder()
         .title(s"Frequency: $f")
         .yRange(-1.2, 1.2)
         .data(sequence.sequence)

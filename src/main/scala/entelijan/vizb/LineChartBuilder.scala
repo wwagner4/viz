@@ -5,7 +5,7 @@ import entelijan.viz.Viz.{DataRow, Diagram, Range, XY}
 
 object LineChartBuilder {
 
-  class Builder(override val _id: String) extends AbstractBuilder[Builder](_id) with Buildable {
+  class Builder extends AbstractBuilder[Builder] with Buildable {
 
     private var _xLabel = Option.empty[String]
     private var _yLabel = Option.empty[String]
@@ -62,7 +62,7 @@ object LineChartBuilder {
       if (_data.isEmpty) throw new IllegalArgumentException("data must be defined")
 
       val dia = Diagram[XY](
-        id = this._id,
+        id = normalizeId(this._id),
         title = _title,
         dataRows = Seq(DataRow(data = _data.get)),
         xLabel = _xLabel,
@@ -74,5 +74,6 @@ object LineChartBuilder {
     }
   }
 
-  def apply(_id: String): Builder = new Builder(_id)
+  def apply(): Builder = new Builder()
+  def apply(_id: String): Builder = new Builder().id(_id)
 }
