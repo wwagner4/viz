@@ -1,27 +1,20 @@
 package entelijan.vizb
 
 import entelijan.viz.Viz.{DataRow, Diagram, Range, XY}
-import entelijan.viz.{VizCreator, VizCreators}
 
 
 object LineChartBuilder {
 
-  class Builder(val id: String) {
+  class Builder(override val _id: String) extends AbstractBuilder[Builder](_id) with Buildable {
 
-    private var _data: Option[Seq[XY]] = None
-    private var _title = "undefined Titel"
     private var _xLabel = Option.empty[String]
     private var _yLabel = Option.empty[String]
     private var _xRange = Option.empty[Range]
     private var _yRange = Option.empty[Range]
+    private var _data: Option[Seq[XY]] = None
 
     def data(data: Seq[XY]): Builder = {
       this._data = Some(data)
-      this
-    }
-
-    def title(title: String): Builder = {
-      this._title = title
       this
     }
 
@@ -65,11 +58,11 @@ object LineChartBuilder {
       this
     }
 
-    def build(): Unit = {
+    def build(): Creatable = {
       if (_data.isEmpty) throw new IllegalArgumentException("data must be defined")
 
       val dia = Diagram[XY](
-        id = this.id,
+        id = this._id,
         title = _title,
         dataRows = Seq(DataRow(data = _data.get)),
         xLabel = _xLabel,
@@ -77,13 +70,9 @@ object LineChartBuilder {
         xRange = _xRange,
         yRange = _yRange
       )
-
-      val creator: VizCreator[XY] = VizCreators.gnuplot(clazz = classOf[XY])
-      creator.createDiagram(dia)
-
+      Creatable.DiagramXy(dia)
     }
   }
 
-
-  def apply(id: String): Builder = new Builder(id)
+  def apply(_id: String): Builder = new Builder(_id)
 }
