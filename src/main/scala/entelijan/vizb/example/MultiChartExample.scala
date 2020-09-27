@@ -31,7 +31,6 @@ object MultiChartExample extends App {
     .buildables(builders)
     .fontScale(1.5)
     .lineScale(1.1)
-    .width(2000)
-    .height(1700)
+    .size(1500, 1400)
     .create()
 }

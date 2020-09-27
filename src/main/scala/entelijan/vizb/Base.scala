@@ -67,6 +67,12 @@ abstract class AbstractBuilder[T <: AbstractBuilder[T]] extends Buildable  {
     this.asInstanceOf[T]
   }
 
+  def size(width: Int, height: Int): T = {
+    this._width = width
+    this._height = height
+    this.asInstanceOf[T]
+  }
+
   def fontScale(fontScale: Double): T = {
     this._fontScale = fontScale
     this.asInstanceOf[T]
