@@ -38,9 +38,13 @@ abstract class AbstractBuilder[T <: AbstractBuilder[T]] extends Buildable  {
 
   protected var _id: String = UUID.randomUUID().toString
   protected var _title = "undefined Titel"
+  protected var _fontScale = 1.0
+  protected var _lineScale = 1.0
+  protected var _width = 1200
+  protected var _height = 900
 
   protected def normalizeId(id: String): String = {
-    id.replace("-", "_")
+    id.replace("-", "_").replace(" ", "_")
   }
 
   def title(title: String): T = {
@@ -50,6 +54,26 @@ abstract class AbstractBuilder[T <: AbstractBuilder[T]] extends Buildable  {
 
   def id(id: String): T = {
     this._id = id
+    this.asInstanceOf[T]
+  }
+
+  def width(width: Int): T = {
+    this._width = width
+    this.asInstanceOf[T]
+  }
+
+  def height(height: Int): T = {
+    this._height = height
+    this.asInstanceOf[T]
+  }
+
+  def fontScale(fontScale: Double): T = {
+    this._fontScale = fontScale
+    this.asInstanceOf[T]
+  }
+
+  def lineScale(lineScale: Double): T = {
+    this._lineScale = lineScale
     this.asInstanceOf[T]
   }
 

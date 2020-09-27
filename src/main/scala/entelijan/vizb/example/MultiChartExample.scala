@@ -29,6 +29,9 @@ object MultiChartExample extends App {
   MultiChartBuilder("vizb_multichart")
     .title("Multichart Example")
     .buildables(builders)
-    .fontFactor(0.7)
+    .fontScale(1.5)
+    .lineScale(1.1)
+    .width(2000)
+    .height(1700)
     .create()
 }

@@ -103,7 +103,10 @@ object Viz {
   case class Diagram[T <: Lineable](
                                      id: String,
                                      title: String,
+                                     width: Int = 1200,
+                                     height: Int = 900,
                                      fontFactor: Double = 1.0,
+                                     lineFactor: Double = 1.0,
                                      xLabel: Option[String] = None,
                                      yLabel: Option[String] = None,
                                      zLabel: Option[String] = None,
@@ -129,7 +132,10 @@ object Viz {
                                           id: String,
                                           columns: Int,
                                           title: Option[String] = None,
+                                          width: Int = 1200,
+                                          height: Int = 900,
                                           fontFactor: Double = 1.0,
+                                          lineFactor: Double = 1.0,
                                           diagrams: Seq[Diagram[T]]
                                         ) extends Dia[T] {
     def rows: Int = math.ceil(diagrams.size.toDouble / columns).toInt

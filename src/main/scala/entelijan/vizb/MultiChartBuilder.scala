@@ -18,15 +18,8 @@ object MultiChartBuilder {
 
     private var _buildables = Seq.empty[Buildable]
 
-    private var _fontFactor = 1.0
-
     def columns(columns: Int): Builder = {
       this._columns = columns
-      this
-    }
-
-    def fontFactor(fontFactor: Double): Builder = {
-      this._fontFactor = fontFactor
       this
     }
 
@@ -42,7 +35,10 @@ object MultiChartBuilder {
         columns = this._columns,
         title = Some(_title),
         diagrams = _buildables.map(toDiagramXy),
-        fontFactor = _fontFactor
+        fontFactor = _fontScale,
+        lineFactor = _lineScale,
+        width = _width,
+        height = _height
       )
       Creatable.MultidiagramXy(multiDiagram)
     }

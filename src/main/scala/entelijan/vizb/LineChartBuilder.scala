@@ -68,7 +68,11 @@ object LineChartBuilder {
         xLabel = _xLabel,
         yLabel = _yLabel,
         xRange = _xRange,
-        yRange = _yRange
+        yRange = _yRange,
+        fontFactor = _fontScale,
+        lineFactor = _lineScale,
+        width = _width,
+        height = _height
       )
       Creatable.DiagramXy(dia)
     }
