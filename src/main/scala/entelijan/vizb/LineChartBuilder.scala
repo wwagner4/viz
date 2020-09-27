@@ -1,6 +1,19 @@
 package entelijan.vizb
 
+import entelijan.viz.Viz
 import entelijan.viz.Viz.{DataRow, Diagram, Range, XY}
+import entelijan.vizb.MultiChartBuilder.Builder
+
+
+sealed trait LineStile
+
+object LineStile {
+
+  case class Solid(size: Double = 1.0) extends LineStile
+
+  case class Dashed(size: Double = 1.0) extends LineStile
+
+}
 
 
 object LineChartBuilder {
@@ -11,10 +24,15 @@ object LineChartBuilder {
     private var _yLabel = Option.empty[String]
     private var _xRange = Option.empty[Range]
     private var _yRange = Option.empty[Range]
-    private var _data: Option[Seq[XY]] = None
+    private var _datas: Seq[Creatable] = Seq.empty[Creatable]
 
     def data(data: Seq[XY]): Builder = {
-      this._data = Some(data)
+      this._datas = Seq(DataRowBuilder().data(data).build())
+      this
+    }
+
+    def dataRows(data: Seq[Creatable]): Builder = {
+      this._datas = data
       this
     }
 
@@ -59,12 +77,17 @@ object LineChartBuilder {
     }
 
     def build(): Creatable = {
-      if (_data.isEmpty) throw new IllegalArgumentException("data must be defined")
+      if (_datas.isEmpty) throw new IllegalArgumentException("data must be defined")
+
+      val dataRows: Seq[DataRow[XY]] = _datas.map {
+        case Creatable.DataRowXy(dataRow) => dataRow
+        case _ => throw new IllegalArgumentException("Only datarows allowed")
+      }
 
       val dia = Diagram[XY](
         id = normalizeId(this._id),
         title = _title,
-        dataRows = Seq(DataRow(data = _data.get)),
+        dataRows = dataRows,
         xLabel = _xLabel,
         yLabel = _yLabel,
         xRange = _xRange,
@@ -79,5 +102,6 @@ object LineChartBuilder {
   }
 
   def apply(): Builder = new Builder()
+
   def apply(_id: String): Builder = new Builder().id(_id)
 }

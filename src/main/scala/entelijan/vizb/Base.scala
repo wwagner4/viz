@@ -3,7 +3,7 @@ package entelijan.vizb
 import java.util.UUID
 
 import entelijan.viz.{Viz, VizCreator, VizCreators}
-import entelijan.viz.Viz.XY
+import entelijan.viz.Viz.{DataRow, XY}
 
 sealed trait Creatable
 
@@ -17,16 +17,18 @@ object Creatable {
 
   case class MultidiagramXy(multiDiagram: Viz.MultiDiagram[XY]) extends Creatable
 
+  case class DataRowXy(dataRow: Viz.DataRow[XY]) extends Creatable
+
 }
 
 object Creator {
 
   def create(buildable: Buildable): Unit = {
     buildable.build() match {
-      case c: Creatable.DiagramXy=>
+      case c: Creatable.DiagramXy =>
         val creator: VizCreator[XY] = VizCreators.gnuplot(clazz = classOf[XY])
         creator.createDiagram(c.diagram)
-      case c: Creatable.MultidiagramXy=>
+      case c: Creatable.MultidiagramXy =>
         val creator: VizCreator[XY] = VizCreators.gnuplot(clazz = classOf[XY])
         creator.createMultiDiagram(c.multiDiagram)
     }
@@ -34,7 +36,7 @@ object Creator {
 
 }
 
-abstract class AbstractBuilder[T <: AbstractBuilder[T]] extends Buildable  {
+abstract class AbstractBuilder[T <: AbstractBuilder[T]] extends Buildable {
 
   protected var _id: String = UUID.randomUUID().toString
   protected var _title = "undefined Titel"
@@ -88,3 +90,45 @@ abstract class AbstractBuilder[T <: AbstractBuilder[T]] extends Buildable  {
   }
 
 }
+
+object DataRowBuilder {
+
+  class Builder extends Buildable {
+    private var _data: Seq[XY] = Seq.empty[XY]
+    private var _name: Option[String] = Option.empty[String]
+    private var _lineStyle: LineStile = LineStile.Solid()
+
+    def data(data: Seq[XY]): Builder = {
+      this._data = data
+      this
+    }
+
+    def name(name: String): Builder = {
+      this._name = Some(name)
+      this
+    }
+
+    def lineStyle(lineStile: LineStile): Builder = {
+      this._lineStyle = lineStile
+      this
+    }
+
+    def create(): Unit = {
+      Creator.create(this)
+    }
+
+    override def build(): Creatable = {
+      if (_data.isEmpty) throw new IllegalArgumentException("At least one data value must be defined")
+      val style = _lineStyle match {
+        case LineStile.Solid(size) => Viz.Style_LINES(size)
+        case LineStile.Dashed(size) => Viz.Style_LINESDASHED(size)
+      }
+      val dataRow = DataRow[XY](name = _name, data = _data, style = style)
+      Creatable.DataRowXy(dataRow)
+    }
+  }
+
+  def apply(): Builder = new Builder()
+}
+
+
