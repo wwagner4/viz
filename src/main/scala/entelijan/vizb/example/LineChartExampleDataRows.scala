@@ -12,7 +12,7 @@ object LineChartExampleDataRows extends App {
       val x = i / 40.0
       XY(x, math.sin(x * freq))
     }
-    val name = f"freqency : $freq%5.1f"
+    val name = f"frequency : $freq%5.1f"
     DataRowBuilder()
       .data(xy)
       .name(name)
@@ -23,7 +23,7 @@ object LineChartExampleDataRows extends App {
   LineChartBuilder("vizb_linechart_datarows")
     .title("Linechart Example Data Rows")
     .creatables(data)
-    .xLabel("horiontal")
+    .xLabel("horizontal")
     .yLabel("vertical")
     .yRange(-1.5, 1.5)
     .fontScale(1.2)

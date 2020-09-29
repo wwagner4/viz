@@ -17,7 +17,7 @@ object Lines3dChart extends App {
     dataRows = rows,
   )
 
-  val crea: VizCreator[XYZ] = VizCreators.gnuplot(clazz = classOf[XYZ])
-  crea.createDiagram(dia)
+  val creator: VizCreator[XYZ] = VizCreators.gnuplot(clazz = classOf[XYZ])
+  creator.createDiagram(dia)
 
 }

@@ -7,9 +7,9 @@ import entelijan.viz.Viz.{Diagram, Lineable, MultiDiagram}
   */
 trait VizCreator[T <: Lineable] {
 
-  def createDiagram(dia: Diagram[T]): Unit
+  def createDiagram(diagram: Diagram[T]): Unit
 
-  def createMultiDiagram(mdia: MultiDiagram[T]): Unit
+  def createMultiDiagram(multidiagram: MultiDiagram[T]): Unit
 
 }
 

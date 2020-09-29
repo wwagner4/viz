@@ -4,7 +4,7 @@ object VizTryout extends App {
 
   private val dir = DefaultDirectories("viz-tryout")
 
-  implicit val creator = VizCreators.gnuplot(scriptDir= dir.scriptDir, imageDir = dir.imageDir, clazz=classOf[Viz.XY])
+  implicit val creator: VizCreator[Viz.XY] = VizCreators.gnuplot(scriptDir= dir.scriptDir, imageDir = dir.imageDir, clazz=classOf[Viz.XY])
 
   val data = Seq(
     Viz.XY(1, 2),

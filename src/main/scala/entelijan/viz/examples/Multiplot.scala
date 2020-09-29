@@ -16,7 +16,7 @@ object Multiplot extends App {
     }
   }
 
-  val mdia = {
+  val multidiagram = {
     val dias = for ((d, i) <- rows.zipWithIndex) yield {
       val nr = i + 1
       Diagram[XY](
@@ -30,7 +30,7 @@ object Multiplot extends App {
   }
 
   val c: VizCreator[XY] = VizCreators.gnuplot(clazz = classOf[XY])
-  c.createMultiDiagram(mdia)
+  c.createMultiDiagram(multidiagram)
 
 
 }

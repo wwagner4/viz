@@ -1,6 +1,6 @@
 package entelijan.viz
 
-object VizMultidiaTryout extends App {
+object VizMultidiagramTryout extends App {
 
   private val dir = DefaultDirectories("viz-tryout")
 
@@ -8,10 +8,10 @@ object VizMultidiaTryout extends App {
 
   val yr = Some(Viz.Range(Some(0), Some(5)))
 
-  val mdia = Viz.MultiDiagram[Viz.XY](
-    "vizMultidiaTryout01",
+  val multiDiagram = Viz.MultiDiagram[Viz.XY](
+    "vizMultidiagramTryout01",
     2,
-    title = Some("Multidia 01"),
+    title = Some("Multidiagram 01"),
     diagrams = Seq(
       Viz.Diagram[Viz.XY](
         "a",
@@ -85,6 +85,6 @@ object VizMultidiaTryout extends App {
     )
   )
 
-  Viz.createDiagram(mdia)
+  Viz.createDiagram(multiDiagram)
 
 }

@@ -21,13 +21,13 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
     create(dia, script3)
   }
 
-  def createMultiDiagram(mdia: MultiDiagram[T]): Unit = {
-    val script1 = createMultiDiagramInit(mdia)
-    val dias: Seq[(Diagram[T], Int)] = mdia.diagrams.reverse.zipWithIndex
+  def createMultiDiagram(multidiagram: MultiDiagram[T]): Unit = {
+    val script1 = createMultiDiagramInit(multidiagram)
+    val dias: Seq[(Diagram[T], Int)] = multidiagram.diagrams.reverse.zipWithIndex
     val script2 = dias.foldRight(script1) { (diaAndIdx, script) => createDiagramData(diaAndIdx._1, diaAndIdx._2, script) }
     val script3 = dias.foldRight(script2) { (diaAndIdx, script) => createDiagramCommands(diaAndIdx._1, diaAndIdx._2, script) }
     val script4 = createMultiDiagramClose(script3)
-    create(mdia, script4)
+    create(multidiagram, script4)
   }
 
   private def createDir(dir: File): Unit = 
@@ -71,20 +71,20 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
   }
   
   def setTerminal(fontFactor: Double, lineFactor: Double, width: Int, height: Int): String = {
-    val fontscale = f"fontscale $fontFactor%.4f"
-    val linescale = f"linewidth $lineFactor%.4f"
+    val fontScale = f"fontScale $fontFactor%.4f"
+    val lineScale = f"lineScale $lineFactor%.4f"
     val size = s"size $width, $height dynamic"
-    s"set terminal svg $size enhanced background rgb 'white' $fontscale $linescale"
+    s"set terminal svg $size enhanced background rgb 'white' $fontScale $lineScale"
   }
 
-  def createMultiDiagramInit(mdia: MultiDiagram[T]): String = {
-    val titleString = if (mdia.title.isDefined) s"title '${mdia.title.get}'" else ""
-    val outfileName = s"${mdia.id}.svg"
+  def createMultiDiagramInit(multidiagram: MultiDiagram[T]): String = {
+    val titleString = if (multidiagram.title.isDefined) s"title '${multidiagram.title.get}'" else ""
+    val outfileName = s"${multidiagram.id}.svg"
     val outfile = new File(imageDir, outfileName)
     s"""
-       |${setTerminal(mdia.fontFactor,mdia.lineFactor, mdia.width, mdia.height)}
+       |${setTerminal(multidiagram.fontFactor,multidiagram.lineFactor, multidiagram.width, multidiagram.height)}
        |set output '${outfile.getAbsolutePath}'
-       |set multiplot layout ${mdia.rows}, ${mdia.columns} $titleString
+       |set multiplot layout ${multidiagram.rows}, ${multidiagram.columns} $titleString
        |""".stripMargin
   }
 
@@ -122,7 +122,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
 
     def data(dataRows: Iterable[DataRow[T]]): String = dataRows.zipWithIndex.map {
       case (dr, i) => s"""
-                         |${datablockName(dia, diaIndex, i)} << EOD
+                         |${dataBlockName(dia, diaIndex, i)} << EOD
                          |${values(dr.data)}
                          |EOD
                          |""".stripMargin.trim
@@ -131,7 +131,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
     script + "\n" + data(dia.dataRows)
   }
 
-  def datablockName(dia: Dia[T], diaIndex: Int, dataIndex: Int): String = s"$$data_${dia.id}_${diaIndex}_$dataIndex"
+  def dataBlockName(dia: Dia[T], diaIndex: Int, dataIndex: Int): String = s"$$data_${dia.id}_${diaIndex}_$dataIndex"
 
   def createDiagramCommands(dia: Diagram[T], diaIndex: Int, script: String): String = {
 
@@ -172,7 +172,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
         }
 
         val style = mapStyle(dr.style)
-        s"""${datablockName(dia, diaIndex, i)} using ${dim(i + 1)} $title with $style"""
+        s"""${dataBlockName(dia, diaIndex, i)} using ${dim(i + 1)} $title with $style"""
     }.mkString(", \\\n")
 
 
@@ -232,21 +232,21 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
 
     def isBoxplot(dataRows: Iterable[Viz.DataRow[T]]): Boolean = {
       if (dataRows.exists(_.style == Viz.Style_BOXPLOT)) {
-        require(dataRows.exists(_.style == Viz.Style_BOXPLOT), "If any datarow has style BOXPLOT all rows must be of style BOXPLOT")
+        require(dataRows.exists(_.style == Viz.Style_BOXPLOT), "If any data row has style BOXPLOT all rows must be of style BOXPLOT")
         true
       } else {
         false
       }
     }
 
-    def descr[U <: Lineable](dr: DataRow[U], idx: Int): String = {
+    def description[U <: Lineable](dr: DataRow[U], idx: Int): String = {
       if (dr.name.isDefined) dr.name.get
       else "" + idx
     }
 
-    def xtics(dataRows: Iterable[Viz.DataRow[T]]): String =
+    def xTics(dataRows: Iterable[Viz.DataRow[T]]): String =
       dataRows.zipWithIndex.map { case (dr, idx) =>
-        s"'${descr(dr, idx)}' ${idx + 1}"
+        s"'${description(dr, idx)}' ${idx + 1}"
       }.mkString(", ")
 
     def settings: String =
@@ -254,7 +254,7 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
         s"""
            |unset key
            |set style data boxplot
-           |set xtics (${xtics(dia.dataRows)})
+           |set xtics (${xTics(dia.dataRows)})
            |#set border 2
            |set xtics nomirror
            |set ytics nomirror

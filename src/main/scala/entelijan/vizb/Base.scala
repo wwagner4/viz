@@ -39,7 +39,7 @@ object Creator {
 abstract class AbstractBuilder[T <: AbstractBuilder[T]] extends Buildable {
 
   protected var _id: String = UUID.randomUUID().toString
-  protected var _title = "undefined Titel"
+  protected var _title = "undefined Title"
   protected var _fontScale = 1.0
   protected var _lineScale = 1.0
   protected var _width = 1200
