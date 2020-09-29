@@ -1,7 +1,7 @@
 package entelijan.vizb.example
 
 import entelijan.viz.Viz.XY
-import entelijan.vizb.{Creatable, DataRowBuilder, LineChartBuilder, LineStile}
+import entelijan.vizb.{DataRowBuilder, LineChartBuilder, LineStile}
 
 object LineChartExampleDataRows extends App {
 
@@ -22,7 +22,7 @@ object LineChartExampleDataRows extends App {
 
   LineChartBuilder("vizb_linechart_datarows")
     .title("Linechart Example Data Rows")
-    .dataRows(data)
+    .creatables(data)
     .xLabel("horiontal")
     .yLabel("vertical")
     .yRange(-1.5, 1.5)

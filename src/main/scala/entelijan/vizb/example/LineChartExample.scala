@@ -12,7 +12,7 @@ object LineChartExample extends App {
 
   LineChartBuilder("vizb_linechart")
     .title("Linechart Example")
-    .data(data)
+    .xySeq(data)
     .xLabel("horiontal")
     .yLabel("vertical")
     .yRangeMax(2.5)

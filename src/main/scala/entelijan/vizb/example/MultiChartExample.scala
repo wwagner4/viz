@@ -1,7 +1,7 @@
 package entelijan.vizb.example
 
 import entelijan.viz.Viz.XY
-import entelijan.vizb.{Buildable, LineChartBuilder, MultiChartBuilder}
+import entelijan.vizb.{LineChartBuilder, MultiChartBuilder}
 
 object MultiChartExample extends App {
 
@@ -13,7 +13,7 @@ object MultiChartExample extends App {
       LineChartBuilder()
         .title(s"Frequency: $f")
         .yRange(-1.2, 1.2)
-        .data(sequence.sequence)
+        .xySeq(sequence.sequence)
     }
 
     def createSequence(f: Double): Seq[XY] = (0 to 200)
