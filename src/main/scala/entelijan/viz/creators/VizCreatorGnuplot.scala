@@ -71,8 +71,8 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
   }
   
   def setTerminal(fontFactor: Double, lineFactor: Double, width: Int, height: Int): String = {
-    val fontScale = f"fontScale $fontFactor%.4f"
-    val lineScale = f"lineScale $lineFactor%.4f"
+    val fontScale = f"fontscale $fontFactor%.4f"
+    val lineScale = f"linewidth $lineFactor%.4f"
     val size = s"size $width, $height dynamic"
     s"set terminal svg $size enhanced background rgb 'white' $fontScale $lineScale"
   }
