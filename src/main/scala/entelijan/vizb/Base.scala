@@ -4,6 +4,7 @@ import java.util.UUID
 
 import entelijan.viz.{Viz, VizCreator, VizCreators}
 import entelijan.viz.Viz.{DataRow, XY}
+import entelijan.vizb.Creatable.DataRowXy
 
 sealed trait Creatable
 
@@ -31,6 +32,7 @@ object Creator {
       case c: Creatable.MultidiagramXy =>
         val creator: VizCreator[XY] = VizCreators.gnuplot(clazz = classOf[XY])
         creator.createMultiDiagram(c.multiDiagram)
+      case DataRowXy(_) => throw new IllegalArgumentException("Datarow must not be created")
     }
   }
 
