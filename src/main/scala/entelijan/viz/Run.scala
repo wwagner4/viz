@@ -1,7 +1,6 @@
 package entelijan.viz
 
 import entelijan.vizb.example.{LineChartExample, LineChartExampleDataRows, MultiChartExample}
-import org.rogach.scallop.{ScallopConf, ScallopOption}
 
 object Run {
 
@@ -17,16 +16,12 @@ object Run {
     Action("mc", "Plots a multichart", () => MultiChartExample.run()),
   )
   private lazy val actionMap: Map[String, Action] = actions.map(a => (a.id, a)).toMap
-  private lazy val actionsDesc: String = actions.map(a => s"\t${a.id} : ${a.desc}").mkString("\n")
+  private lazy val actionsDesc: String = actions.map(a => f" - ${a.id}%-8s${a.desc}").mkString("\n")
 
-  private class Conf(arguments: Seq[String]) extends ScallopConf(arguments) {
-    val action: ScallopOption[String] = trailArg[String](descr = s"\n$actionsDesc", required = false)     
-    verify()
-  }
 
-  def main(args: Array[String]): Unit = {
-    val conf = new Conf(args.toIndexedSeq)
-    val id = conf.action.getOrElse("-")
+  private def run(args: Array[String]): Unit = {
+    if (args.length != 1) throw new IllegalArgumentException("require argument 'action' not found'")
+    val id = args(0)
     actionMap.get(id) match {
       case Some(value) =>
         println(s"-------------------------------------------------------------------------------------")
@@ -34,10 +29,20 @@ object Run {
         println(s"${value.desc}")
         println(s"-------------------------------------------------------------------------------------")
         value.action()
-      case None => println(s"Error: Unknown action: '$id'")
+      case None => throw new IllegalArgumentException(s"Error: Unknown action: '$id'")
     }
   }
 
+
+  def main(args: Array[String]): Unit = {
+    try {
+      run(args)
+    } catch {
+      case e: Exception =>
+        println(s"ERROR: ${e.getMessage}")
+        println(s"possible actions:\n$actionsDesc")
+    }
+  }
 
 
 }
