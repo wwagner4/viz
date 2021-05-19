@@ -1,9 +1,11 @@
-name := "viz"
+val dottyVersion = "3.0.0-RC3"
 
-version := "0.2-SNAPSHOT"
-
-organization := "net.entelijan"
-
-scalaVersion := "2.13.6"
-
-// scalacOptions := Seq("-unchecked", "-deprecation")
+lazy val root = project
+  .in(file("."))
+  .settings(
+    name := "viz",
+    organization := "net.entelijan",
+    version := "0.2-SNAPSHOT",
+    // scalacOptions := Seq("-unchecked", "-deprecation")
+    scalaVersion := dottyVersion,
+  )
