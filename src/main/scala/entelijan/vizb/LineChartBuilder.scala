@@ -1,6 +1,6 @@
 package entelijan.vizb
 
-import entelijan.viz.Viz.{DataRow, Diagram, Range, XY}
+import entelijan.viz.Viz.{DataRow, Diagram, Range, XY, Scaling}
 
 
 sealed trait LineStile
@@ -22,6 +22,8 @@ object LineChartBuilder {
     private var _yLabel = Option.empty[String]
     private var _xRange = Option.empty[Range]
     private var _yRange = Option.empty[Range]
+    private var _xScaling = Scaling.LIN
+    private var _yScaling = Scaling.LIN
     private var _creatables: Seq[Creatable] = Seq.empty[Creatable]
 
     def xySeq(xySeq: Seq[XY]): Builder = {
@@ -74,6 +76,16 @@ object LineChartBuilder {
       this
     }
 
+    def xScalingLog: Builder = {
+      this._xScaling = Scaling.LOG
+      this
+    }
+
+    def yScalingLog: Builder = {
+      this._yScaling = Scaling.LOG
+      this
+    }
+
     def build(): Creatable = {
       if (_creatables.isEmpty) throw new IllegalArgumentException("data must be defined")
 
@@ -90,6 +102,8 @@ object LineChartBuilder {
         yLabel = _yLabel,
         xRange = _xRange,
         yRange = _yRange,
+        xScaling = _xScaling,
+        yScaling = _yScaling,
         fontFactor = _fontScale,
         lineFactor = _lineScale,
         width = _width,

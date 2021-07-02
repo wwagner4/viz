@@ -10,8 +10,8 @@ To use it in your project follow these steps:
 * add viz as a dependency to your project. 'libraryDependencies += "net.entelijan" %% "viz" % "0.2-SNAPSHOT"'
 
 ## TODO
-All new Features will only be implemented for the buildr interface which
+All new Features will only be tested using the builder interface which
 resides in entelijan.vizb
 
-
-- Allow logaritmc scaling 
+- Allow logaritmc scaling
+- Define Output directory and work directory
