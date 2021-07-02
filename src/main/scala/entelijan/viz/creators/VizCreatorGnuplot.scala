@@ -1,11 +1,10 @@
 package entelijan.viz.creators
 
+import entelijan.viz.Viz.{DataDim_1D, DataDim_2D, DataDim_3D, DataRow, Dia, Diagram, LegendPlacement_LEFT, LegendPlacement_RIGHT, Lineable, MultiDiagram, Range, Scaling}
+import entelijan.viz.{Viz, VizCreator}
+
 import java.io.{Closeable, File, PrintWriter}
 import java.util.Locale
-
-import entelijan.viz.Viz.{DataDim_1D, DataDim_2D, DataDim_3D, DataRow, Dia, Diagram, LegendPlacement_LEFT, LegendPlacement_RIGHT, Lineable, MultiDiagram, Range}
-
-import entelijan.viz.{Viz, VizCreator}
 
 /**
   * An implementation for data visualisation using gnuplot
@@ -182,6 +181,21 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
 
     def zLabel: String = if (dia.zLabel.isDefined) s"""set zlabel "${dia.zLabel.get}"""" else ""
 
+    def xScaling: String = dia.xScaling match {
+      case Scaling.LIN => ""
+      case Scaling.LOG => "set logscale x"
+    }
+
+    def yScaling: String = dia.yScaling match {
+      case Scaling.LIN => ""
+      case Scaling.LOG => "set logscale y"
+    }
+
+    def zScaling: String = dia.zScaling match {
+      case Scaling.LIN => ""
+      case Scaling.LOG => "set logscale z"
+    }
+
     def xZeroAxis: String = if (dia.xZeroAxis) s"""set xzeroaxis""" else ""
 
     def yZeroAxis: String = if (dia.yZeroAxis) s"""set yzeroaxis""" else ""
@@ -273,6 +287,9 @@ case class VizCreatorGnuplot[T <: Lineable](scriptDir: File, imageDir: File, exe
          |$xLabel
          |$yLabel
          |$zLabel
+         |$xScaling
+         |$yScaling
+         |$zScaling
          |$xZeroAxis
          |$yZeroAxis
          |$zZeroAxis

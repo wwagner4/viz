@@ -1,6 +1,6 @@
 package entelijan.viz
 
-import entelijan.vizb.example.{LineChartExample, LineChartExampleDataRows, MultiChartExample}
+import entelijan.vizb.example.{LineChartExample, LineChartExampleDataRows, LineChartLogExample, MultiChartExample}
 
 object Run {
 
@@ -12,6 +12,7 @@ object Run {
 
   private val actions = Seq(
     Action("lc", "Plots a linechart with one data row", () => LineChartExample.run()),
+    Action("lcl", "Plots a linechart with one data row and logaritmic scaling", () => LineChartLogExample.run()),
     Action("lcm", "Plots a linechart with multiple data rows", () => LineChartExampleDataRows.run()),
     Action("mc", "Plots a multichart", () => MultiChartExample.run()),
   )

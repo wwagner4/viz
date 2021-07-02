@@ -113,6 +113,9 @@ object Viz {
                                      xRange: Option[Range] = None,
                                      yRange: Option[Range] = None,
                                      zRange: Option[Range] = None,
+                                     xScaling: Scaling = Scaling.LIN,
+                                     yScaling: Scaling = Scaling.LIN,
+                                     zScaling: Scaling = Scaling.LIN,
                                      xZeroAxis: Boolean = false,
                                      yZeroAxis: Boolean = false,
                                      zZeroAxis: Boolean = false,
@@ -144,6 +147,9 @@ object Viz {
       if (diagrams.isEmpty) throw new IllegalStateException("Cannot determine data dimension because no diagram is defined")
       else diagrams.head.dataDim
   }
+  
+  enum Scaling:
+    case LIN, LOG
 
   case class Range(
                     from: Option[Number],
